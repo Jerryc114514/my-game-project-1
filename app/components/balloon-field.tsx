@@ -134,7 +134,7 @@ export default function BalloonField({ settings, onBalloonPop, clickPosition }: 
       {/* Visual feedback for clicks */}
       <mesh position={[0, 0, -1]} scale={0.02}>
         <sphereGeometry args={[1, 16, 16]} />
-        <meshBasicMaterial color="white" transparent opacity={0.8} />
+        <meshBasicMaterial args={[{ color: "white", transparent: true, opacity: 0.8 }]} />
       </mesh>
     </group>
   )
