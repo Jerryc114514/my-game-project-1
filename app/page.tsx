@@ -1,10 +1,10 @@
 "use client"
 
-import { useState } from "react"
-import { LanguageProvider } from "@/components/language-context"
-import GameMenu from "@/components/game-menu"
-import Game from "@/components/game"
-import GameOver from "@/components/game-over"
+import { useState } from "react" // <-- 需要加上这一行
+import GameMenu from "./components/game-menu"
+import Game from "./components/game"
+import GameOver from "./components/game-over"
+import { LanguageProvider } from "./components/language-context"
 
 export type Difficulty = "easy" | "medium" | "hard" | "extreme"
 export type GameState = "menu" | "playing" | "gameOver"
@@ -51,4 +51,3 @@ export default function Home() {
     </LanguageProvider>
   )
 }
-
