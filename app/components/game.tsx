@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react"
 import { useLanguage } from "./language-context"
-import type { Difficulty } from "@/app/page"
+import type { Difficulty } from "@/page"
 import Balloon from "./balloon"
 
 interface GameProps {
@@ -181,4 +181,3 @@ export default function Game({ username, difficulty, onGameOver }: GameProps) {
     </div>
   )
 }
-

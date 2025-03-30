@@ -1,37 +1,38 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { useFrame } from "@react-three/fiber"
 
 const DebugOverlay = () => {
   const [fps, setFps] = useState(0)
+  const [frameCount, setFrameCount] = useState(0)
 
   useEffect(() => {
-    let frameCount = 0
     let lastTime = performance.now()
+    let frames = 0
 
-    const calculateFps = () => {
+    const loop = () => {
       const now = performance.now()
-      frameCount++
+      frames++
       if (now - lastTime >= 1000) {
-        setFps(frameCount)
-        frameCount = 0
+        setFps(frames)
+        setFrameCount(prev => prev + frames)
+        frames = 0
         lastTime = now
       }
-      requestAnimationFrame(calculateFps)
+      requestAnimationFrame(loop)
     }
-
-    calculateFps()
+    requestAnimationFrame(loop)
   }, [])
 
-  // 修改后的地方在这里
-  if (process.env.NODE_ENV !== 'development') return null
+  // 这里修正了环境变量检查的方式
+  if (process.env.NODE_ENV !== "development") return null
 
   return (
     <div className="absolute bottom-0 left-0 bg-black/70 text-white p-2 font-mono text-xs">
-      FPS: {fps}
+      FPS: {fps} | Frames: {frameCount}
     </div>
   )
 }
 
 export default DebugOverlay
+

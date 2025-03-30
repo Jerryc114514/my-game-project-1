@@ -4,7 +4,7 @@ import type React from "react"
 
 import { useState } from "react"
 import { useLanguage } from "./language-context"
-import type { Difficulty } from "@/app/page"
+import type { Difficulty } from "@/page"
 import LanguageSelector from "./language-selector"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -113,4 +113,3 @@ export default function GameMenu({ onStart, difficulty, onDifficultyChange }: Ga
     </div>
   )
 }
-
