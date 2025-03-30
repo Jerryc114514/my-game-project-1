@@ -48,13 +48,18 @@ const BalloonObject = forwardRef<THREE.Mesh, BalloonProps>(({ balloon }, ref) =>
       onPointerOut={() => setHovered(false)}
     >
       <sphereGeometry args={[1, 32, 32]} />
-      <meshStandardMaterial
-        color={balloon.color}
-        roughness={0.2}
-        metalness={0.1}
-        emissive={hovered ? balloon.color : "#000000"}
-        emissiveIntensity={hovered ? 0.5 : 0}
-      />
+<meshStandardMaterial
+  attach="material"
+  args={[
+    {
+      color: balloon.color,
+      roughness: 0.2,
+      metalness: 0.1,
+      emissive: hovered ? balloon.color : "#000000",
+      emissiveIntensity: hovered ? 0.5 : 0,
+    },
+  ]}
+/>
     </mesh>
   )
 })
