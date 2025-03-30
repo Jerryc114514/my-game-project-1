@@ -1,6 +1,6 @@
 "use client"
 
-import type { Difficulty } from "@/app/page"
+import type { Difficulty } from "@/page"
 
 interface DifficultySelectorProps {
   difficulty: Difficulty
