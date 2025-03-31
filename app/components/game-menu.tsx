@@ -1,14 +1,13 @@
 "use client"
 
 import type React from "react"
-
 import { useState } from "react"
 import { useLanguage } from "./language-context"
-import type { Difficulty } from "@/page"
+import type { Difficulty } from "../types"
 import LanguageSelector from "./language-selector"
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "./ui/card"
+import { Input } from "./ui/input"
+import { Button } from "./ui/button"
 
 interface GameMenuProps {
   onStart: (username: string) => void

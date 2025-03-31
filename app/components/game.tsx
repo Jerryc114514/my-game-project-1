@@ -104,7 +104,7 @@ export default function Game({ username, difficulty, onGameOver }: GameProps) {
     }, 1000)
 
     return () => clearInterval(timer)
-  }, [score, onGameOver])
+  }, [onGameOver]) // 移除了 score 依赖
 
   // Spawn balloons
   useEffect(() => {
