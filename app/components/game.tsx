@@ -73,6 +73,12 @@ export default function Game({ username, difficulty, onGameOver }: GameProps) {
   const settings = difficultySettings[difficulty]
   const gameActive = useRef(true)
 
+  // 使用 ref 存储 onGameOver，确保引用稳定
+  const onGameOverRef = useRef(onGameOver)
+  useEffect(() => {
+    onGameOverRef.current = onGameOver
+  }, [onGameOver])
+
   // Initialize container size
   useEffect(() => {
     const updateSize = () => {
@@ -83,40 +89,40 @@ export default function Game({ username, difficulty, onGameOver }: GameProps) {
         })
       }
     }
-
+  
     updateSize()
     window.addEventListener("resize", updateSize)
     return () => window.removeEventListener("resize", updateSize)
   }, [])
 
-  // Game timer
+  // Game timer - 依赖数组为空，不会因 score 变化而重启
   useEffect(() => {
     const timer = setInterval(() => {
       setTimeLeft((prev) => {
         if (prev <= 1) {
           clearInterval(timer)
           gameActive.current = false
-          setTimeout(() => onGameOver(score), 1000)
+          setTimeout(() => onGameOverRef.current(score), 1000)
           return 0
         }
         return prev - 1
       })
     }, 1000)
-
+  
     return () => clearInterval(timer)
-  }, [onGameOver]) // 移除了 score 依赖
+  }, [])
 
   // Spawn balloons
   useEffect(() => {
     if (!containerSize.width || !containerSize.height) return
-
+  
     const spawnBalloon = () => {
       if (!gameActive.current) return
-
+  
       if (balloons.length < settings.balloonCount) {
         const size = Math.floor(Math.random() * (settings.maxSize - settings.minSize + 1)) + settings.minSize
         const { x, y } = getRandomPosition(containerSize.width, containerSize.height, size)
-
+  
         const newBalloon: BalloonData = {
           id: nextId,
           x,
@@ -125,47 +131,47 @@ export default function Game({ username, difficulty, onGameOver }: GameProps) {
           color: getRandomColor(),
           createdAt: Date.now(),
         }
-
+  
         setBalloons((prev) => [...prev, newBalloon])
         setNextId((prev) => prev + 1)
       }
     }
-
+  
     const spawnInterval = setInterval(spawnBalloon, 500)
     return () => clearInterval(spawnInterval)
   }, [balloons.length, containerSize, nextId, settings])
-
+  
   // Remove expired balloons
   useEffect(() => {
     const checkExpired = setInterval(() => {
       const now = Date.now()
       setBalloons((prev) => prev.filter((balloon) => now - balloon.createdAt < settings.lifetime))
     }, 100)
-
+  
     return () => clearInterval(checkExpired)
   }, [settings.lifetime])
-
+  
   // Handle balloon pop
   const handleBalloonPop = (id: number) => {
     setBalloons((prev) => prev.filter((balloon) => balloon.id !== id))
     setScore((prev) => prev + 1)
   }
-
+  
   return (
     <div className="relative w-full h-screen overflow-hidden" ref={containerRef}>
       {/* Score and timer display */}
       <div className="absolute top-4 left-4 bg-black/50 p-2 rounded text-white text-xl z-10">
         {t("score")} {score}
       </div>
-
+  
       <div className="absolute top-4 right-4 bg-black/50 p-2 rounded text-white text-xl z-10">
         {t("time")} {timeLeft}s
       </div>
-
+  
       <div className="absolute top-4 left-1/2 -translate-x-1/2 bg-black/50 p-2 rounded text-white text-xl z-10">
         {username}
       </div>
-
+  
       {/* Balloons */}
       {balloons.map((balloon) => (
         <Balloon
